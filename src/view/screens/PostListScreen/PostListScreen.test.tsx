@@ -12,9 +12,7 @@ describe('post list screen', () => {
   it('should show post list in the first screen', async () => {
     const fetchMock = jest
       .spyOn(global, 'fetch')
-      .mockResolvedValue(
-        new Response(JSON.stringify({data: {children: mockList}})),
-      );
+      .mockResolvedValue(new Response(JSON.stringify(mockList)));
 
     const Tab = createMaterialTopTabNavigator();
 

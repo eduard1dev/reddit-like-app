@@ -1,5 +1,3 @@
-import ky from 'ky';
-
 export type Post = {
   kind: string;
   data: {
@@ -21,11 +19,14 @@ export type PostList = {
 };
 
 export default async (sort: string, after: string): Promise<PostList> => {
-  const data: any | {error: number} = await ky
-    .get(`https://api.reddit.com/r/pics/${sort}.json?after=${after}`, {
+  const response: any | {error: number} = await fetch(
+    `https://api.reddit.com/r/pics/${sort}.json?after=${after}`,
+    {
       cache: 'no-store',
-    })
-    .json();
+    },
+  );
+
+  const data = await response.json();
 
   if (data.error) {
     throw new Error('Failed to fetch posts');
