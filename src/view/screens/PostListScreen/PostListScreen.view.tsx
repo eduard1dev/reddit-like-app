@@ -1,10 +1,18 @@
 import React from 'react';
-import {FlatList, Alert, ActivityIndicator, StyleSheet} from 'react-native';
+import {
+  FlatList,
+  Alert,
+  ActivityIndicator,
+  StyleSheet,
+  RefreshControl,
+  RefreshControlComponent,
+} from 'react-native';
 import {useInfiniteQuery} from '@tanstack/react-query';
 import Card from '../../components/Card/Card.view';
 import fetchPosts, {Post} from '../../../services/posts/fetchPosts';
 import {useRoute} from '@react-navigation/native';
 import {spacing} from '../../../lib/styles';
+import {useRefreshByUser} from '../../../hooks/useRefreshByUser';
 
 export default function PostListScreen() {
   const {name} = useRoute();
@@ -25,6 +33,8 @@ export default function PostListScreen() {
     initialPageParam: '',
     getNextPageParam: lastPage => lastPage?.data?.after,
   });
+
+  const {isRefetchingByUser, refetchByUser} = useRefreshByUser(refetch);
 
   if (isLoading)
     <ActivityIndicator
@@ -51,8 +61,8 @@ export default function PostListScreen() {
       }}
       onEndReachedThreshold={0.5}
       testID="post-list"
-      onRefresh={refetch}
-      refreshing={isFetching}
+      onRefresh={refetchByUser}
+      refreshing={isRefetchingByUser}
     />
   );
 }
