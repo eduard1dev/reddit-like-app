@@ -37,11 +37,13 @@ export default function PostListScreen() {
   const {isRefetchingByUser, refetchByUser} = useRefreshByUser(refetch);
 
   if (isLoading)
-    <ActivityIndicator
-      animating
-      size="small"
-      style={styles.activityIndicator}
-    />;
+    return (
+      <ActivityIndicator
+        animating
+        size="small"
+        style={styles.activityIndicator}
+      />
+    );
 
   if (isError) {
     Alert.alert(error.name, error.message);
